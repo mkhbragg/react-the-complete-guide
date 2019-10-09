@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import classes from './Button.css';
 
@@ -7,5 +8,10 @@ const button = (props) => (
         className={[classes.Button, classes[props.btnType]].join(' ')}
         onClick={props.clicked}>{props.children}</button>
 );
+
+button.propTypes = {
+    children: PropTypes.node.isRequired,
+    clicked: PropTypes.func
+};
 
 export default button;

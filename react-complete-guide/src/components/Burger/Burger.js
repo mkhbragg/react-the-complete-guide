@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import classes from './Burger.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
-const Burger = (props) => {
+const burger = (props) => {
     let transformedIngredients = Object.keys(props.ingredients)
         .map(igKey => {
             return [...Array(props.ingredients[igKey])].map((_, i) => {
@@ -27,4 +28,8 @@ const Burger = (props) => {
     );
 };
 
-export default Burger;
+burger.propTypes = {
+    ingredients: PropTypes.object.isRequired
+};
+
+export default burger;
