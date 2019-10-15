@@ -8,13 +8,16 @@ import Backdrop from '../Backdrop/Backdrop';
 class Modal extends Component {
     // wrapping element controls the updating of the wrapped element.
     shouldComponentUpdate(nextProps, nextState) {
-       return nextProps.show !== this.props.show;
+        // update view if show value is changed or if the children have been updated
+       return (nextProps.show !== this.props.show) || (nextProps.children !== this.props.children);
     }
 
     render() {
         return (
             <Aux>
-                <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
+                <Backdrop
+                    show={this.props.show}
+                    clicked={this.props.modalClosed} />
                 <div
                     className={classes.Modal}
                     style={{
