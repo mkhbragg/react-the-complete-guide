@@ -10,15 +10,27 @@ const withErrorHandler = (WrappedComponent, axios) => {
             error: null
         }
 
-        componentDidMount () {
+        // every time this component is used zombie interceptors will be created that must be removed when the component is unmounted.
+        constructor() {
+            super();
             // clear error state when a new request is sent
-            axios.interceptors.request.use(req => {
+            this.reqInterceptor = axios.interceptors.request.use(req => {
                 this.setState({ error: null });
                 return req;
             })
-            axios.interceptors.response.use(res => res, error => {
+            this.resInterceptor = axios.interceptors.response.use(res => res, error => {
                 this.setState({ error: error });
             });
+        }
+
+        /**
+         * NOTES
+         * - Executed when a component is no longer required
+         * - If writing withErrorHandler as a functional component, can include the contents of this method in the return of useEffect
+         **/
+        componentWillUnmount() {
+            axios.interceptors.request.eject(this.reqInterceptor);
+            axios.interceptors.response.eject(this.resInterceptor);
         }
 
         errorConfirmedHandler = () => {
