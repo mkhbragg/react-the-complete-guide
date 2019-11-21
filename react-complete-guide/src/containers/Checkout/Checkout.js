@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
+import Aux from '../../hoc/Aux/Aux';
 
 class Checkout extends Component {
     state = {
@@ -10,7 +11,7 @@ class Checkout extends Component {
         price: 0
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getQueryParams();
     }
 
@@ -40,11 +41,15 @@ class Checkout extends Component {
     render() {
         return (
             <div>
-                <CheckoutSummary
-                    ingredients={this.state.ingredients} 
-                    checkoutCanceled={this.checkoutCanceledHandler}
-                    checkoutContinued={this.checkoutContinuedHandler} />
-                    <Route path={`${this.props.match.path}/contact-data`} render={(props) => <ContactData ingredients={this.state.ingredients} price={this.state.price} {...props} />} />
+                { this.state.ingredients ?
+                    <Aux>
+                        <CheckoutSummary
+                            ingredients={this.state.ingredients} 
+                            checkoutCanceled={this.checkoutCanceledHandler}
+                            checkoutContinued={this.checkoutContinuedHandler} />
+                            <Route path={`${this.props.match.path}/contact-data`} render={(props) => <ContactData ingredients={this.state.ingredients} price={this.state.price} {...props} />} />
+                    </Aux>
+                  : null }
             </div>
         );
     }
